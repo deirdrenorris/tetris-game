@@ -369,6 +369,35 @@ document.addEventListener('keydown', e => {
   }
 });
 
+// ─── Touch input ─────────────────────────────────────────────────────────────
+let touchStartX = 0;
+let touchStartY = 0;
+const SWIPE_THRESHOLD = 20; // px min distance to count as a swipe
+
+canvas.addEventListener('touchstart', e => {
+  e.preventDefault();
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+}, { passive: false });
+
+canvas.addEventListener('touchend', e => {
+  e.preventDefault();
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  const dy = e.changedTouches[0].clientY - touchStartY;
+  const absDx = Math.abs(dx);
+  const absDy = Math.abs(dy);
+
+  if (gameOver) { init(); return; }
+
+  if (absDx < SWIPE_THRESHOLD && absDy < SWIPE_THRESHOLD) {
+    rotate(); // tap
+  } else if (absDx > absDy) {
+    if (dx > 0) moveRight(); else moveLeft(); // horizontal swipe
+  } else {
+    if (dy > 0) softDrop(); else hardDrop(); // vertical swipe
+  }
+}, { passive: false });
+
 // ─── Start ───────────────────────────────────────────────────────────────────
 function start() {
   init();
