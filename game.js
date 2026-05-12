@@ -385,13 +385,17 @@ function stopMove() {
 const btnLeft  = document.getElementById('btn-left');
 const btnRight = document.getElementById('btn-right');
 
+const btnDown  = document.getElementById('btn-down');
+
 for (const evt of ['mousedown', 'touchstart']) {
   btnLeft.addEventListener(evt,  e => { e.preventDefault(); if (!gameOver) startMove(moveLeft);  }, { passive: false });
   btnRight.addEventListener(evt, e => { e.preventDefault(); if (!gameOver) startMove(moveRight); }, { passive: false });
+  btnDown.addEventListener(evt,  e => { e.preventDefault(); if (!gameOver) startMove(softDrop);  }, { passive: false });
 }
 for (const evt of ['mouseup', 'touchend', 'touchcancel']) {
   btnLeft.addEventListener(evt,  stopMove);
   btnRight.addEventListener(evt, stopMove);
+  btnDown.addEventListener(evt,  stopMove);
 }
 
 // ─── Touch input ─────────────────────────────────────────────────────────────
