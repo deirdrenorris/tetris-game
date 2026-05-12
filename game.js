@@ -369,6 +369,31 @@ document.addEventListener('keydown', e => {
   }
 });
 
+// ─── Button controls (mobile) ────────────────────────────────────────────────
+let moveRepeatTimer = null;
+
+function startMove(fn) {
+  fn();
+  moveRepeatTimer = setInterval(fn, 100);
+}
+
+function stopMove() {
+  clearInterval(moveRepeatTimer);
+  moveRepeatTimer = null;
+}
+
+const btnLeft  = document.getElementById('btn-left');
+const btnRight = document.getElementById('btn-right');
+
+for (const evt of ['mousedown', 'touchstart']) {
+  btnLeft.addEventListener(evt,  e => { e.preventDefault(); if (!gameOver) startMove(moveLeft);  }, { passive: false });
+  btnRight.addEventListener(evt, e => { e.preventDefault(); if (!gameOver) startMove(moveRight); }, { passive: false });
+}
+for (const evt of ['mouseup', 'touchend', 'touchcancel']) {
+  btnLeft.addEventListener(evt,  stopMove);
+  btnRight.addEventListener(evt, stopMove);
+}
+
 // ─── Touch input ─────────────────────────────────────────────────────────────
 let touchStartX = 0;
 let touchStartY = 0;
